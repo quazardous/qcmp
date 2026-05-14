@@ -36,7 +36,7 @@ program
     .name("qcmp")
     .description("Quick Components — inventory + version extractors + bumpers")
     .option("--config <path>", "Path to qcmp.yaml (default: walk up from cwd)")
-    .version("0.1.0");
+    .version("0.2.0");
 
 program
     .command("list")

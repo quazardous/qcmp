@@ -1,6 +1,6 @@
 {
   "name": "@quazardous/qcmp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "qcmp (Quick Components) — inventory + version extractors + bumpers driven by qcmp.yaml at the project root.",
   "license": "MIT",
   "author": "David Berlioz",
