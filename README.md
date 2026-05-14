@@ -60,7 +60,7 @@ components:
     extractor: regex
 
   - key: release
-    extractor: git                 # latest tag matching `v*` (override with `path:`)
+    extractor: git                 # `git describe --tags --abbrev=0` (fallback glob: `path:` or `v*`)
 ```
 
 ## Extractors
@@ -70,7 +70,7 @@ components:
 | `json`  | `file:` (JSON) | dotted key (e.g. `version`, `dependencies.react`) |
 | `text`  | `file:` (plain text) | ignored — the whole trimmed file is the version |
 | `regex` | `file:` (any text) | a regex, the **first capture group** is the version |
-| `git`   | the repo containing `qcmp.yaml` | tag glob (default `v*`) |
+| `git`   | the repo containing `qcmp.yaml` | fallback tag glob, default `v*` (ignored when `git describe` succeeds) |
 
 ## Bumpers
 

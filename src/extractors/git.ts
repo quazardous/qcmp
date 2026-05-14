@@ -1,7 +1,11 @@
 /**
- * Git extractor: ask git for the most-recent annotated tag reachable
- * from HEAD. Falls back to listing tags matching `v*` (or the regex
- * passed via `path`) and picking the highest semver-ish one.
+ * Git extractor: ask `git describe --tags --abbrev=0` for the most-recent
+ * tag (annotated or lightweight) reachable from HEAD. That's the primary
+ * answer and it ignores `path:` — git itself picks the tag.
+ *
+ * Only when describe returns nothing do we fall back to `git tag --list
+ * <glob>` (default `v*`, override via `path:`) and pick the highest
+ * semver-ish one.
  *
  * No `file` required — the projectRoot is the git working tree.
  */
@@ -19,9 +23,9 @@ export function extractGit(cfg: ComponentsConfig, comp: Component): string {
         const tag = desc.stdout.trim();
         if (tag) return stripLeadingV(tag);
     }
-    // Fallback: list tags matching pattern, take the lexicographically
-    // last one (semver-ish since `v1.10.0` > `v1.2.0` is what we'd want
-    // — naive sort is wrong, do a proper compare).
+    // Fallback: list tags matching the glob and take the highest by a
+    // semver-ish compare (so `v1.10.0` > `v1.2.0`, which naive
+    // lexicographic sort would get wrong).
     const pattern = comp.path ?? "v*";
     const list = spawnSync(
         "git",
