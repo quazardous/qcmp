@@ -23,5 +23,8 @@ if [[ "$ROOT" == "/" ]]; then
     exit 1
 fi
 
+# Preserve the invoker's cwd so the parser's walk-up sees the user's
+# project tree, not the install dir. cli.ts reads QCMP_CWD when set.
+QCMP_CWD="$PWD"
 cd "$ROOT"
-exec npx --no-install tsx "$PKG_ROOT/src/cli.ts" "$@"
+exec env QCMP_CWD="$QCMP_CWD" npx --no-install tsx "$PKG_ROOT/src/cli.ts" "$@"

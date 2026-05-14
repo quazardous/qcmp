@@ -56,7 +56,10 @@ export function findConfigUpwards(start: string): string | null {
     return null;
 }
 
-export function loadConfig(explicitPath: string | null = null, cwd: string = process.cwd()): ComponentsConfig {
+export function loadConfig(
+    explicitPath: string | null = null,
+    cwd: string = process.env.QCMP_CWD ?? process.cwd(),
+): ComponentsConfig {
     const configPath = explicitPath
         ? resolve(explicitPath)
         : findConfigUpwards(cwd);
