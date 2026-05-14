@@ -1,0 +1,35 @@
+{
+  "name": "@quazardous/qcmp",
+  "version": "0.1.0",
+  "description": "qcmp (Quick Components) — inventory + version extractors + bumpers driven by qcmp.yaml at the project root.",
+  "license": "MIT",
+  "author": "David Berlioz",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/quazardous/qcmp.git"
+  },
+  "homepage": "https://github.com/quazardous/qcmp#readme",
+  "bugs": {
+    "url": "https://github.com/quazardous/qcmp/issues"
+  },
+  "type": "module",
+  "bin": {
+    "qcmp": "./bin/qcmp"
+  },
+  "scripts": {
+    "start": "tsx src/cli.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "^14.0.3",
+    "yaml": "^2.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

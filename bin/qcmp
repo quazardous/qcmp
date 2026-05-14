@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# qcmp (Quick Components) — inventory + version extractors + bumpers
+# driven by qcmp.yaml at the project root. See README.md.
+set -eo pipefail
+
+SELF="$0"
+while [[ -L "$SELF" ]]; do
+    target="$(readlink "$SELF")"
+    if [[ "$target" = /* ]]; then SELF="$target"; else SELF="$(dirname "$SELF")/$target"; fi
+done
+BIN_DIR="$(cd "$(dirname "$SELF")" && pwd)"
+PKG_ROOT="$(cd "$BIN_DIR/.." && pwd)"
+
+# Walk up from PKG_ROOT until we find a node_modules with tsx. Usually
+# qcmp's own install carries it, but if the user dropped this repo into
+# a monorepo node_modules we'll happily share theirs.
+ROOT="$PKG_ROOT"
+while [[ "$ROOT" != "/" ]] && [[ ! -d "$ROOT/node_modules/tsx" ]]; do
+    ROOT="$(dirname "$ROOT")"
+done
+if [[ "$ROOT" == "/" ]]; then
+    echo "qcmp: cannot find tsx — run 'npm install' in $PKG_ROOT first" >&2
+    exit 1
+fi
+
+cd "$ROOT"
+exec npx --no-install tsx "$PKG_ROOT/src/cli.ts" "$@"
