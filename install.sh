@@ -73,6 +73,12 @@ fi
 log "Installing npm dependencies"
 ( cd "$PREFIX_LIB" && npm install --silent )
 
+# Build dist/ (the bin runs node dist/cli.js — no tsx at runtime). The
+# prepare script already triggers this on `npm install`; we run it
+# explicitly so the install is robust even with --ignore-scripts.
+log "Building qcmp (dist/)"
+( cd "$PREFIX_LIB" && npm run build --silent )
+
 mkdir -p "$PREFIX_BIN"
 ln -sf "$PREFIX_LIB/bin/qcmp" "$PREFIX_BIN/qcmp"
 log "Symlinked $PREFIX_BIN/qcmp"

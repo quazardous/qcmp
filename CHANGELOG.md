@@ -15,6 +15,25 @@
 > Versioning: [SemVer](https://semver.org/). Bumps reflect user-visible
 > contract changes, not internal cleanup cadence.
 
+## [Unreleased]
+
+### Added
+- **Programmatic SDK** — `import { qcmp } from "@quazardous/qcmp"` is now
+  the single way to read versions from code: `qcmp().version(key)`,
+  `.versions()`, `.versionsSafe()`, `.list()`, `.get(key)`,
+  `.changelog(key)`. The low-level functions the CLI is built on
+  (`loadConfig`, `extractVersion`, `writeVersion`, the semver helpers) and
+  the `Component` / `ComponentsConfig` types are exported too. The CLI is
+  the same library with a terminal face — not a separate API.
+
+### Changed
+- **qcmp now builds to `dist/`** (`.js` + `.d.ts`) instead of running the
+  TypeScript source directly. The import works from any JS runtime (plain
+  Node, tsx, bundler), and qcmp is installable as a git/file dependency —
+  the `prepare` script builds on `npm install`. The CLI runs
+  `node dist/cli.js` (no tsx at runtime); `./install.sh` builds during
+  install.
+
 ## [0.2.0] - 2026-05-14
 
 Documentation-only release. No code paths change; if you read the README

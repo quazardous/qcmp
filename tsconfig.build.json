@@ -1,0 +1,20 @@
+{
+  // Emit config — produces dist/ (.js + .d.ts) for the published/importable
+  // package. The root tsconfig.json stays noEmit (typecheck + tsx/vitest use
+  // Bundler resolution); here we switch to NodeNext so the emitted ESM has
+  // the .js specifiers Node needs at runtime. The source already writes
+  // imports with .js extensions, so both resolvers are happy.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["test", "dist", "node_modules"]
+}

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # qcmp (Quick Components) — inventory + version extractors + bumpers
 # driven by qcmp.yaml at the project root. See README.md.
+#
+# Runs the built CLI (dist/cli.js) under plain node — no tsx at runtime.
+# `npm run build` (or `npm install`, via the prepare script) produces dist/.
 set -eo pipefail
 
 SELF="$0"
@@ -11,20 +14,13 @@ done
 BIN_DIR="$(cd "$(dirname "$SELF")" && pwd)"
 PKG_ROOT="$(cd "$BIN_DIR/.." && pwd)"
 
-# Walk up from PKG_ROOT until we find a node_modules with tsx. Usually
-# qcmp's own install carries it, but if the user dropped this repo into
-# a monorepo node_modules we'll happily share theirs.
-ROOT="$PKG_ROOT"
-while [[ "$ROOT" != "/" ]] && [[ ! -d "$ROOT/node_modules/tsx" ]]; do
-    ROOT="$(dirname "$ROOT")"
-done
-if [[ "$ROOT" == "/" ]]; then
-    echo "qcmp: cannot find tsx — run 'npm install' in $PKG_ROOT first" >&2
+ENTRY="$PKG_ROOT/dist/cli.js"
+if [[ ! -f "$ENTRY" ]]; then
+    echo "qcmp: $ENTRY missing — run 'npm run build' in $PKG_ROOT first" >&2
     exit 1
 fi
 
 # Preserve the invoker's cwd so the parser's walk-up sees the user's
-# project tree, not the install dir. cli.ts reads QCMP_CWD when set.
-QCMP_CWD="$PWD"
-cd "$ROOT"
-exec env QCMP_CWD="$QCMP_CWD" npx --no-install tsx "$PKG_ROOT/src/cli.ts" "$@"
+# project tree, not the install dir. cli.ts reads QCMP_CWD when set. No
+# cd needed: node resolves node_modules relative to the script, not cwd.
+exec env QCMP_CWD="$PWD" node "$ENTRY" "$@"
