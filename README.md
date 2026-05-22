@@ -88,6 +88,61 @@ Pass `--exact <version>` to set an arbitrary string (pre-release suffixes,
 non-semver versions, downgrades, …). Pass `--dry-run` to print without
 writing.
 
+## Programmatic access
+
+Two ways to read component versions from other tooling, smallest first.
+
+### 1. Shell out to the CLI (any language)
+
+`qcmp versions` prints a stable JSON map and `qcmp version <key>` prints a
+single line — that's the language-agnostic contract:
+
+```bash
+qcmp versions                 # {"app":"1.4.2","api":"0.9.0"}
+qcmp versions --pretty        # same, indented
+qcmp version app              # 1.4.2
+```
+
+```js
+import { execFileSync } from "node:child_process";
+const versions = JSON.parse(execFileSync("qcmp", ["versions"], { encoding: "utf8" }));
+```
+
+`qcmp versions` never fails the whole map on one bad component: an
+unreadable entry becomes `{"key":{"error":"…"}}` so the rest still come
+through.
+
+### 2. Import the SDK (Node / TypeScript)
+
+For callers already in the TS ecosystem, import the API directly and skip
+the subprocess:
+
+```ts
+import { qcmp } from "@quazardous/qcmp";
+
+const c = qcmp();                 // walks up from cwd to find qcmp.yaml
+c.version("app");                 // "1.4.2"
+c.versions();                     // { app: "1.4.2", api: "0.9.0" } (throws on a bad component)
+c.versionsSafe();                 // same, but a bad component → { error: "…" }
+c.list();                         // Component[]
+c.get("app");                     // one Component
+c.changelog("app", 3);            // last 3 CHANGELOG entries
+
+qcmp({ config: "/path/to/qcmp.yaml" });   // explicit config
+qcmp({ cwd: "/some/subdir" });            // start the walk-up elsewhere
+```
+
+The low-level functions the CLI is built on are exported too —
+`loadConfig`, `findComponent`, `extractVersion`, `writeVersion`,
+`incrementSemver`, `parseSemver`, `tailChangelog` — plus the
+`Component` / `ComponentsConfig` types.
+
+> qcmp ships as TypeScript source and runs under **tsx** (no build step),
+> so the package entry point is the `.ts`. Import it from any tsx /
+> ts-node / bundler-based project. Plain `node` consumers (or other
+> languages) should use option 1 above. There is no npm publish yet —
+> add qcmp as a git/file dependency, or call the installed CLI.
+
 ## Why not a build/release tool
 
 `qcmp` is intentionally narrow:
