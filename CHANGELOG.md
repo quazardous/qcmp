@@ -15,7 +15,7 @@
 > Versioning: [SemVer](https://semver.org/). Bumps reflect user-visible
 > contract changes, not internal cleanup cadence.
 
-## [Unreleased]
+## [0.3.0] - 2026-05-22
 
 ### Added
 - **Programmatic SDK** — `import { qcmp } from "@quazardous/qcmp"` is now

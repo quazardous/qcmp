@@ -1,6 +1,6 @@
 {
   "name": "@quazardous/qcmp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "qcmp (Quick Components) — inventory + version extractors + bumpers driven by qcmp.yaml at the project root.",
   "keywords": [
     "version",
@@ -17,7 +17,7 @@
   "author": "David Berlioz",
   "repository": {
     "type": "git",
-    "url": "https://github.com/quazardous/qcmp.git"
+    "url": "git+https://github.com/quazardous/qcmp.git"
   },
   "homepage": "https://github.com/quazardous/qcmp#readme",
   "bugs": {
