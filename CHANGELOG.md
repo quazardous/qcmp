@@ -15,6 +15,14 @@
 > Versioning: [SemVer](https://semver.org/). Bumps reflect user-visible
 > contract changes, not internal cleanup cadence.
 
+## [Unreleased]
+
+### Added
+- **`qcmp init`** — scaffold a starter `qcmp.yaml` from a detected
+  `package.json` (writes a `main` component tracking `version`). Refuses to
+  overwrite an existing `qcmp.yaml` unless `--force`. package.json-only for
+  now.
+
 ## [0.3.0] - 2026-05-22
 
 ### Added

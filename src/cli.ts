@@ -17,6 +17,7 @@ import { extractVersion } from "./extractors/index.js";
 import { writeVersion } from "./bumpers/index.js";
 import { incrementSemver, type BumpType } from "./semver.js";
 import { tailChangelog } from "./changelog.js";
+import { initConfig } from "./init.js";
 
 interface GlobalOpts {
     config?: string;
@@ -37,6 +38,23 @@ program
     .description("Quick Components — inventory + version extractors + bumpers")
     .option("--config <path>", "Path to qcmp.yaml (default: walk up from cwd)")
     .version("0.3.0");
+
+program
+    .command("init")
+    .description("Scaffold a starter qcmp.yaml from a detected package.json")
+    .option("--force", "Overwrite an existing qcmp.yaml")
+    .action((opts: { force?: boolean }) => {
+        try {
+            const r = initConfig({ force: opts.force });
+            const where = r.project ? `, project '${r.project}'` : "";
+            process.stdout.write(
+                `qcmp: wrote ${r.configPath} (component '${r.componentKey}'${where})\n`,
+            );
+        } catch (e) {
+            process.stderr.write(`qcmp: ${(e as Error).message}\n`);
+            process.exit(1);
+        }
+    });
 
 program
     .command("list")

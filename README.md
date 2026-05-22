@@ -6,6 +6,7 @@ simple `bump` operation. One config file, four extractors
 (`json` / `text` / `regex` / `git`), three bumpers, no daemon, no MCP.
 
 ```bash
+qcmp init                       # scaffold a starter qcmp.yaml from package.json
 qcmp list                       # one row per component
 qcmp version <key>              # print one version
 qcmp versions [--pretty]        # JSON map { key: version }
@@ -35,6 +36,9 @@ Requires Node ≥ 20.
 Make sure `~/.local/bin` is on your `PATH`.
 
 ## `qcmp.yaml`
+
+Run `qcmp init` to scaffold one from your `package.json` (it writes a `main`
+component tracking `version`), or write it by hand:
 
 ```yaml
 project: my-app                   # free-form id, links to your other tooling
