@@ -2,6 +2,17 @@
   "name": "@quazardous/qcmp",
   "version": "0.2.0",
   "description": "qcmp (Quick Components) — inventory + version extractors + bumpers driven by qcmp.yaml at the project root.",
+  "keywords": [
+    "version",
+    "versioning",
+    "semver",
+    "bump",
+    "changelog",
+    "components",
+    "monorepo",
+    "cli",
+    "qcmp"
+  ],
   "license": "MIT",
   "author": "David Berlioz",
   "repository": {
@@ -27,8 +38,12 @@
     "dist",
     "bin",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "LICENSE"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "qcmp": "./bin/qcmp"
   },
